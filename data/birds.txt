@@ -1,0 +1,95 @@
+Robin:
+{'types': 123,
+ 'tokens': 3390,
+ 'top-10': [('65', 216), ('35', 158), ('66', 154), ('53', 147), ('64', 125), ('45', 123), ('172', 114), ('58', 87), ('40', 71), ('69', 65)],
+ 'sentences': 890,
+ 'entropy': 6.072,
+ 'ttr': 0.036,
+ 'sent_len_min': 1,
+ 'sent_len_max': 22,
+ 'sent_len_mean': 3.809,
+ 'sent_len_median': 3.0,
+ 'sent_ttr_min': 0.333,
+ 'sent_ttr_max': 1.0,
+ 'sent_ttr_mean': 0.9335,
+ 'sent_ttr_median': 1.0,
+ 'sent_repr_min': 0.0,
+ 'sent_repr_max': 1.0,
+ 'sent_repr_mean': 0.0506,
+ 'sent_repr_median': 0.0}
+
+Black-headed Grosbeak:
+{'types': 299,
+ 'tokens': 4016,
+ 'top-10': [('aa', 256), ('ad', 98), ('au', 97), ('co', 82), ('ae', 80), ('ax', 78), ('ab', 75), ('an', 71), ('mc', 67), ('jp', 53)],
+ 'sentences': 288,
+ 'entropy': 7.261,
+ 'ttr': 0.074,
+ 'sent_len_min': 1,
+ 'sent_len_max': 270,
+ 'sent_len_mean': 13.9444,
+ 'sent_len_median': 9.0,
+ 'sent_ttr_min': 0.23,
+ 'sent_ttr_max': 1.0,
+ 'sent_ttr_mean': 0.9001,
+ 'sent_ttr_median': 1.0,
+ 'sent_repr_min': 0.0,
+ 'sent_repr_max': 1.0,
+ 'sent_repr_mean': 0.1884,
+ 'sent_repr_median': 0.0}
+
+California Thrasher:
+{'types': 395,
+ 'tokens': 5690,
+ 'top-10': [('alc', 144), ('nfo', 130), ('ala', 111), ('ait', 98), ('ago', 86), ('aiw', 86), ('aix', 79), ('ngh', 79), ('aku', 79), ('akq', 75)],
+ 'sentences': 436,
+ 'entropy': 7.638,
+ 'ttr': 0.069,
+ 'sent_len_min': 1,
+ 'sent_len_max': 114,
+ 'sent_len_mean': 13.0505,
+ 'sent_len_median': 11.0,
+ 'sent_ttr_min': 0.123,
+ 'sent_ttr_max': 1.0,
+ 'sent_ttr_mean': 0.5421,
+ 'sent_ttr_median': 0.5,
+ 'sent_repr_min': 0.0,
+ 'sent_repr_max': 1.0,
+ 'sent_repr_mean': 0.3971,
+ 'sent_repr_median': 0.351}
+
+Cassin's Vireo:
+{'types': 113,
+ 'tokens': 2665,
+ 'top-10': [('bm', 102), ('ba', 75), ('dn', 73), ('cn', 70), ('ci', 67), ('db', 64), ('ck', 63), ('bi', 63), ('bc', 62), ('cr', 62)],
+ 'sentences': 489,
+ 'entropy': 6.28,
+ 'ttr': 0.042,
+ 'sent_len_min': 1,
+ 'sent_len_max': 150,
+ 'sent_len_mean': 5.4499,
+ 'sent_len_median': 2,
+ 'sent_ttr_min': 0.238,
+ 'sent_ttr_max': 1.0,
+ 'sent_ttr_mean': 0.887,
+ 'sent_ttr_median': 1.0,
+ 'sent_repr_min': 0.0,
+ 'sent_repr_max': 1.0,
+ 'sent_repr_mean': 0.0339,
+ 'sent_repr_median': 0.0}
+
+
+
+
+
+
+
+
+
+Skipped file C:\Users\Valentin\PycharmProjects\birds\data\birddb\cavi2012\1027.TextGrid due to error reading textgrid
+Skipped file C:\Users\Valentin\PycharmProjects\birds\data\birddb\cavi2012\1027a.TextGrid due to error reading textgrid
+Skipped file C:\Users\Valentin\PycharmProjects\birds\data\birddb\cavi2012\1027b.TextGrid due to error reading textgrid
+Skipped file C:\Users\Valentin\PycharmProjects\birds\data\birddb\cavi2012\AmadorJy12-9.TextGrid due to error reading textgrid
+Skipped file C:\Users\Valentin\PycharmProjects\birds\data\birddb\cavi2012\AmadorJy12-9a.TextGrid due to error reading textgrid
+Skipped file C:\Users\Valentin\PycharmProjects\birds\data\birddb\cavi2012\AmadorJy12-9b.TextGrid due to error reading textgrid
+Skipped file C:\Users\Valentin\PycharmProjects\birds\data\robin\data\H-09june09-0530-robin.TextGrid due to error reading textgrid
