@@ -4,7 +4,7 @@ import math
 import textgrids
 from statistics import mean, median
 from collections import Counter
-from tqdm import tqdm
+from tqdm.auto import tqdm
 
 
 def stats(list_of_tokenlists):
@@ -12,7 +12,7 @@ def stats(list_of_tokenlists):
     per_sentence = []
     per_sentence_repr = []
     lengths = []
-    for sentence in list_of_tokenlists:
+    for sentence in tqdm(list_of_tokenlists, desc='Running statistics'):
         lengths.append(len(sentence))
         c.update(sentence)
         sent_types = set()
@@ -20,12 +20,13 @@ def stats(list_of_tokenlists):
             sent_types.add(token)
         per_sentence.append(round(1.0 * len(sent_types) / len(sentence), 3))
         per_sentence_repr.append(rep_rate(sentence))
+    ent = entropy(c)
     return {
         'types': len(c),
         'tokens': sum(lengths),
         'top-10': c.most_common(10),
         'sentences': len(lengths),
-        'entropy': round(sum([-x * math.log2(x / c.total()) for x in c.values()]) / c.total(), 3),
+        'entropy': ent,
         'ttr': round(1.0 * len(c) / sum(lengths), 3),
         'sent_len_min': min(lengths),
         'sent_len_max': max(lengths),
@@ -157,15 +158,43 @@ def get_data_human(dirname, pattern=r'.*\.txt'):
 
 def get_list_of_wordsequences(data, langcode, split=r'\W+'):
     result = []
-    for ll in data[langcode]:
+    for ll in tqdm(data[langcode], desc=f'Tokenizing at word level {langcode}'):
         for line in ll:
-            result.append(re.split(split, line))
+            res = re.split(split, line)
+            res = list(filter(None, res))
+            if len(res) > 0:
+                result.append(res)
     return result
 
 
-def get_list_of_charsequences(listofwordsequences):
+def get_list_of_charsequences(listofwordsequences, langcode):
     result = []
-    for ll in listofwordsequences:
+    for ll in tqdm(listofwordsequences, desc=f'Tokenizing at word level {langcode}'):
         for word in ll:
             result.append([c for c in word])
     return result
+
+
+def build_tokenized_data(data, words=True):
+    result = {}
+    for lc in data:
+        result[lc] = {}
+        ws = get_list_of_wordsequences(data, lc)
+        if words:
+            result[lc] = ws
+        else:
+            result[lc] = get_list_of_charsequences(ws, lc)
+    return result
+
+
+def compute_human_stats(tokenized_data):
+    result = {}
+    for lc in tokenized_data:
+        result[lc] = {}
+        result[lc] = stats(tokenized_data[lc])
+    return result
+
+
+def entropy(counter):
+    total = counter.total()
+    return round(sum([-x * math.log2(x / total) for x in counter.values()]) / total, 3)
