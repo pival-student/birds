@@ -7,6 +7,46 @@ from collections import Counter
 from tqdm.auto import tqdm
 
 
+def new_stats(list_of_tokenlists, lc):
+    all = Counter()
+    ttrs = []
+    lengths = []
+    reprs = []
+    entrs = []
+    entrs2 = []
+    for sentence in tqdm(list_of_tokenlists, desc=f'{lc}: collecting counts'):
+        types = Counter(sentence)
+        lengths.append(len(sentence))
+        all.update(sentence)
+        # for token in sentence:
+        #     types.update(token)
+        ttrs.append(round(1.0 * len(types) / len(sentence), 3))
+        reprs.append(rep_rate(sentence))
+        entrs2.append(entropy(types))
+
+    all_entr = None
+    total_tokens = sum(lengths)
+    for sentence in tqdm(list_of_tokenlists, desc=f'{lc}: computing entropy'):
+        if not all_entr:
+            all_entr = entropy(all) #total entropy
+            for k in all.keys():
+                all[k] = 1.0 * all[k] / total_tokens
+        entrs.append(entropy_with_est(sentence, all))
+    return {
+        'types': len(all),
+        'tokens': total_tokens,
+        'top-10': all.most_common(10),
+        'sentences': len(lengths),
+        'entropy': all_entr,
+        'entropy2': entropy_with_est(all.keys(), all),
+        'sent_lens': lengths,
+        'sent_entrs': entrs,
+        'sent_entrs2': entrs2,
+        'sent_ttrs': ttrs,
+        'sent_reprs': reprs,
+    }
+
+
 def stats(list_of_tokenlists):
     c = Counter()
     per_sentence = []
@@ -197,4 +237,22 @@ def compute_human_stats(tokenized_data):
 
 def entropy(counter):
     total = counter.total()
-    return round(sum([-x * math.log2(x / total) for x in counter.values()]) / total, 3)
+    sum = 0.0
+    for x in counter.values():
+        prob = 1.0 * x / total
+        lp = math.log2(prob)
+        prod = -prob * lp
+        sum += prod
+    return sum
+    # return round(sum([-x * math.log2( 1.0 * x / total) for x in counter.values()]) / total, 3)
+
+
+def entropy_with_est(tokens, counter):
+    sum = 0.0
+    for x in tokens:
+        prob = counter[x]
+        lp = math.log2(prob)
+        prod = -prob * lp
+        sum += prod
+    return sum
+    # return round(sum([-counter[x] * math.log2(counter[x]) for x in tokens]), 3)
