@@ -5,6 +5,7 @@ import textgrids
 from statistics import mean, median
 from collections import Counter
 from tqdm.auto import tqdm
+import pandas as pd
 
 
 def new_stats(list_of_tokenlists, lc):
@@ -12,8 +13,8 @@ def new_stats(list_of_tokenlists, lc):
     ttrs = []
     lengths = []
     reprs = []
-    entrs = []
-    entrs2 = []
+    entrs_loc = []
+    entrs_glob = []
     for sentence in tqdm(list_of_tokenlists, desc=f'{lc}: collecting counts'):
         types = Counter(sentence)
         lengths.append(len(sentence))
@@ -22,28 +23,32 @@ def new_stats(list_of_tokenlists, lc):
         #     types.update(token)
         ttrs.append(round(1.0 * len(types) / len(sentence), 3))
         reprs.append(rep_rate(sentence))
-        entrs2.append(entropy(types))
+        entrs_loc.append(entropy(types))
 
     all_entr = None
     total_tokens = sum(lengths)
-    for sentence in tqdm(list_of_tokenlists, desc=f'{lc}: computing entropy'):
+    for sentence in tqdm(list_of_tokenlists, desc=f'{lc}: computing global mle entropy'):
         if not all_entr:
-            all_entr = entropy(all) #total entropy
-            for k in all.keys():
+            all_entr = entropy(all) # total entropy
+            for k in all.keys():  # convert counts to probs for per sequence est
                 all[k] = 1.0 * all[k] / total_tokens
-        entrs.append(entropy_with_est(sentence, all))
+        entrs_glob.append(entropy_with_est(Counter(sentence), all))
+    # collate stuff in dataframe for plotting
+    df = pd.DataFrame({
+        'lang': [lc for i in range(len(lengths))],
+        'seq_len': lengths,
+        'seq_entr_glob': entrs_glob,
+        'seq_entr_loc': entrs_loc,
+        'seq_ttr': ttrs,
+        'seq_repr': reprs,
+    })
     return {
         'types': len(all),
         'tokens': total_tokens,
         'top-10': all.most_common(10),
-        'sentences': len(lengths),
+        'seq-count': len(lengths),
         'entropy': all_entr,
-        'entropy2': entropy_with_est(all.keys(), all),
-        'sent_lens': lengths,
-        'sent_entrs': entrs,
-        'sent_entrs2': entrs2,
-        'sent_ttrs': ttrs,
-        'sent_reprs': reprs,
+        'data': df,
     }
 
 
@@ -171,6 +176,17 @@ def get_data_singletier(dirname, regex=r'.*\.TextGrid'):
     return data
 
 
+# def get_data_singletier(dirname, regex=r'.*\.TextGrid'):
+#     data = []
+#     for tgfile in get_files(dirname, regex):
+#
+#         grid = load_grid(tgfile)
+#         songs = get_songs_singletier(grid)
+#         data.extend(songs)
+#
+#     return data
+
+
 def read_textfile(textfile):
     lc = 'unk'
     linedata = []
@@ -231,28 +247,28 @@ def compute_human_stats(tokenized_data):
     result = {}
     for lc in tokenized_data:
         result[lc] = {}
-        result[lc] = stats(tokenized_data[lc])
+        result[lc] = new_stats(tokenized_data[lc], lc)
     return result
 
 
 def entropy(counter):
     total = counter.total()
-    sum = 0.0
-    for x in counter.values():
-        prob = 1.0 * x / total
-        lp = math.log2(prob)
-        prod = -prob * lp
-        sum += prod
-    return sum
-    # return round(sum([-x * math.log2( 1.0 * x / total) for x in counter.values()]) / total, 3)
+    # sum = 0.0
+    # for x in counter.values():
+    #     prob = 1.0 * x / total
+    #     lp = math.log2(prob)
+    #     prod = -prob * lp
+    #     sum += prod
+    # return sum
+    return round(sum([-x * math.log2( 1.0 * x / total) for x in counter.values()]) / total, 3)
 
 
-def entropy_with_est(tokens, counter):
-    sum = 0.0
-    for x in tokens:
-        prob = counter[x]
-        lp = math.log2(prob)
-        prod = -prob * lp
-        sum += prod
-    return sum
-    # return round(sum([-counter[x] * math.log2(counter[x]) for x in tokens]), 3)
+def entropy_with_est(types, mleprob_counter):
+    # sum = 0.0
+    # for x in types:
+    #     prob = counter[x]
+    #     lp = math.log2(prob)
+    #     prod = -prob * lp
+    #     sum += prod
+    # return sum
+    return round(sum([-mleprob_counter[x] * math.log2(mleprob_counter[x]) for x in types.keys()]), 3)
