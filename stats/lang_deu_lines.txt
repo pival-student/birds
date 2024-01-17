@@ -1,0 +1,26 @@
+seq-count: 1400993
+tokens: 10681325
+types: 343161
+entropy: 11.653
+top-10:
+  "und": 2.16%
+  "die": 1.98%
+  "der": 1.75%
+  "nicht": 1.21%
+  "ich": 1.18%
+  "das": 1.13%
+  "ist": 1.13%
+  "zu": 1.1%
+  "in": 1.09%
+  "Ich": 1.01%
+bot-10:
+  "Willenseinigung": 0.0%
+  "Grundeinheit": 0.0%
+  "Wahlverfahren": 0.0%
+  "innerstaatliche": 0.0%
+  "Verwitwung": 0.0%
+  "Unterhaltsmittel": 0.0%
+  "Berufsschulunterricht": 0.0%
+  "Hochschulunterricht": 0.0%
+  "vorrangiges": 0.0%
+  "Wohles": 0.0%

@@ -1,0 +1,26 @@
+seq-count: 1238236
+tokens: 10983467
+types: 129064
+entropy: 10.514
+top-10:
+  "the": 4.53%
+  "of": 2.47%
+  "to": 2.44%
+  "I": 2.24%
+  "and": 2.06%
+  "a": 1.96%
+  "you": 1.75%
+  "in": 1.33%
+  "s": 1.19%
+  "that": 1.09%
+bot-10:
+  "doorknobs": 0.0%
+  "Aarón": 0.0%
+  "flakiest": 0.0%
+  "pancetta": 0.0%
+  "Seasoning": 0.0%
+  "flambé": 0.0%
+  "Geropsychiatric": 0.0%
+  "Rohan42": 0.0%
+  "Cuttin": 0.0%
+  "embarrassingly": 0.0%

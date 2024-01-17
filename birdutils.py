@@ -8,6 +8,8 @@ from tqdm.auto import tqdm
 import pandas as pd
 
 
+EXCL_SYS = ['Hans', 'Hant', 'Hani', 'Jpan', 'Knda', 'Mymr', 'Thai']
+
 def new_stats(list_of_tokenlists, lc):
     all = Counter()
     ttrs = []
@@ -46,6 +48,7 @@ def new_stats(list_of_tokenlists, lc):
         'types': len(all),
         'tokens': total_tokens,
         'top-10': all.most_common(10),
+        'bot-10': all.most_common()[-10:],
         'seq-count': len(lengths),
         'entropy': all_entr,
         'data': df,
@@ -195,11 +198,36 @@ def read_textfile(textfile):
             for line in inf:
                 if line.startswith('# iso'):
                     lc = line.strip().split('\t')[1]
+                if line.startswith('# writing_system'):
+                    cc = line.strip().split('\t')[1]
+                    if cc in EXCL_SYS:
+                        break
                 if line.startswith('<line'):
                     linedata.append(line.strip().split('\t')[1])
     except:
         print(f'Skipped file {textfile}')
     return lc, linedata
+
+def read_charset(textfile):
+    lc = 'unk'
+    try:
+        with open(textfile, 'r', encoding='utf-8') as inf:
+            for line in inf:
+                if line.startswith('# writing_system'):
+                    lc = line.strip().split('\t')[1]
+                    break
+    except:
+        print(f'Skipped file {textfile}')
+    return lc
+
+
+def get_data_charsets(dirname, pattern=r'.*\.txt'):
+    data = {}
+    for textfile in tqdm(get_files(dirname, pattern), desc='Reading text files'):
+        langcode = read_charset(textfile)
+        if langcode not in data:
+            data[langcode] = [textfile]
+    return data
 
 
 def get_data_human(dirname, pattern=r'.*\.txt'):
@@ -212,20 +240,39 @@ def get_data_human(dirname, pattern=r'.*\.txt'):
     return data
 
 
+def tokenize(listofdocs, desc='', split=r'\W+'):
+    tokenized_docs = []
+    tokenized_lines = []
+    for doc in tqdm(listofdocs, desc=f'Splitting into words {desc}'):
+        doc_list = []
+        for line in doc:
+            token_list = re.split(split, line)
+            token_list = list(filter(None, token_list))
+            if len(token_list) > 1:
+                doc_list.extend(token_list)
+                tokenized_lines.append(token_list)
+        if len(doc_list) > 1:
+            tokenized_docs.append(doc_list)
+    return tokenized_docs, tokenized_lines
+
+
+
+
+
 def get_list_of_wordsequences(data, langcode, split=r'\W+'):
     result = []
-    for ll in tqdm(data[langcode], desc=f'Tokenizing at word level {langcode}'):
+    for ll in tqdm(data[langcode], desc=f'Splitting lines into words {langcode}'):
         for line in ll:
             res = re.split(split, line)
             res = list(filter(None, res))
-            if len(res) > 0:
+            if len(res) > 1:
                 result.append(res)
     return result
 
 
-def get_list_of_charsequences(listofwordsequences, langcode):
+def charsplit(listofwordsequences, langcode):
     result = []
-    for ll in tqdm(listofwordsequences, desc=f'Tokenizing at word level {langcode}'):
+    for ll in tqdm(listofwordsequences, desc=f'Splitting words into characters {langcode}'):
         for word in ll:
             result.append([c for c in word])
     return result
@@ -239,7 +286,7 @@ def build_tokenized_data(data, words=True):
         if words:
             result[lc] = ws
         else:
-            result[lc] = get_list_of_charsequences(ws, lc)
+            result[lc] = charsplit(ws, lc)
     return result
 
 

@@ -1,0 +1,26 @@
+seq-count: 1022120
+tokens: 5431831
+types: 315910
+entropy: 13.257
+top-10:
+  "bir": 2.25%
+  "ve": 1.01%
+  "için": 0.92%
+  "de": 0.75%
+  "bu": 0.74%
+  "Bu": 0.74%
+  "mi": 0.64%
+  "da": 0.64%
+  "var": 0.6%
+  "ne": 0.59%
+bot-10:
+  "ahlâkın": 0.0%
+  "icaplarını": 0.0%
+  "sınırlamalara": 0.0%
+  "hürriyetler": 0.0%
+  "veçhile": 0.0%
+  "Beyannamenin": 0.0%
+  "zümreye": 0.0%
+  "hürriyetleri": 0.0%
+  "girişme": 0.0%
+  "yorumlanamaz": 0.0%
