@@ -319,3 +319,11 @@ def entropy_with_est(types, mleprob_counter):
     #     sum += prod
     # return sum
     return round(sum([-mleprob_counter[x] * math.log2(mleprob_counter[x]) for x in types.keys()]), 3)
+
+
+def running_entropy(listoftokens, max=100000000):
+    entrs = []
+    for i in tqdm(range(1, min(len(listoftokens), max)), desc='Computing running entropy'):
+        entrs.append(entropy(Counter(listoftokens[:i])))
+    return entrs
+

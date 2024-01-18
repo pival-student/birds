@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import math
 import numpy as np
+from iteration_utilities import deepflatten
 
 matplotlib.use('TkAgg')
 
@@ -55,27 +56,117 @@ def plot(data, task='', key='', cut=3):
 
 if __name__ == '__main__':
     # get bird data
-    robin = get_data_robin('data/robin/data')
-    bhgr = get_data_singletier('data/birddb/bhgr')
-    cath = get_data_singletier('data/birddb/cath2')
-    cavi = get_data_singletier('data/birddb/cavi2012')
+    # robin = get_data_robin('data/robin/data')
+    # bhgr = get_data_singletier('data/birddb/bhgr')
+    # cath = get_data_singletier('data/birddb/cath2')
+    # cavi = get_data_singletier('data/birddb/cavi2012')
     # compute bird stats
-    bird_stats = {
-        'robin': new_stats(robin, 'robin'),
-        'bhgr': new_stats(bhgr, 'bhgr'),
-        'cath': new_stats(cath, 'cath'),
-        'cavi': new_stats(cavi, 'cavi')
-    }
-    print_stats(bird_stats, 'bird')
-    # concatenate bird df
-    bird_df = pd.concat([bird_stats[lc]['data'] for lc in bird_stats.keys()])
-    # plot
-    plot(bird_df, 'birds', 'seq_len')
-    plot(bird_df, 'birds', 'seq_ttr', cut=0)
-    plot(bird_df, 'birds', 'seq_repr', cut=0)
-    plot(bird_df, 'birds', 'seq_entr_loc', cut=0)
-    plot(bird_df, 'birds', 'seq_entr_glob', cut=0)
+    # bird_stats = {
+    #     'robin': new_stats(robin, 'robin'),
+    #     'bhgr': new_stats(bhgr, 'bhgr'),
+    #     'cath': new_stats(cath, 'cath'),
+    #     'cavi': new_stats(cavi, 'cavi')
+    # }
+    # print_stats(bird_stats, 'bird')
+    # # concatenate bird df
+    # bird_df = pd.concat([bird_stats[lc]['data'] for lc in bird_stats.keys()])
+    # # plot
+    # plot(bird_df, 'birds', 'seq_len')
+    # plot(bird_df, 'birds', 'seq_ttr', cut=0)
+    # plot(bird_df, 'birds', 'seq_repr', cut=0)
+    # plot(bird_df, 'birds', 'seq_entr_loc', cut=0)
+    # plot(bird_df, 'birds', 'seq_entr_glob', cut=0)
 
+
+    # eng = get_data_human('data/teddi', r'eng.*\.txt')
+    # eng_docs, eng_lines = tokenize(eng['eng'], 'eng')
+    # eng_words = charsplit(eng_docs, 'eng')
+    #
+    # deu = get_data_human('data/teddi', r'deu.*\.txt')
+    # deu_docs, deu_lines = tokenize(deu['deu'], 'deu')
+    # deu_words = charsplit(deu_docs, 'deu')
+    #
+    # heb = get_data_human('data/teddi', r'heb.*\.txt')
+    # heb_docs, heb_lines = tokenize(heb['heb'], 'heb')
+    # heb_words = charsplit(heb_docs, 'heb')
+    #
+    # tur = get_data_human('data/teddi', r'tur.*\.txt')
+    # tur_docs, tur_lines = tokenize(tur['tur'], 'tur')
+    # tur_words = charsplit(tur_docs, 'tur')
+    #
+    # vie = get_data_human('data/teddi', r'vie.*\.txt')
+    # vie_docs, vie_lines = tokenize(vie['vie'], 'vie')
+    # vie_words = charsplit(vie_docs, 'vie')
+
+    # doc_stats = {
+    #     'eng_docs': new_stats(eng_docs, 'eng_docs'),
+    #     'deu_docs': new_stats(deu_docs, 'deu_docs'),
+    #     'heb_docs': new_stats(heb_docs, 'heb_docs'),
+    #     'tur_docs': new_stats(tur_docs, 'tur_docs'),
+    #     'vie_docs': new_stats(vie_docs, 'vie_docs'),
+    # }
+    # print_stats(doc_stats, 'lang')
+    # line_stats = {
+    #     'eng_lines': new_stats(eng_lines, 'eng_lines'),
+    #     'deu_lines': new_stats(deu_lines, 'deu_lines'),
+    #     'heb_lines': new_stats(heb_lines, 'heb_lines'),
+    #     'tur_lines': new_stats(tur_lines, 'tur_lines'),
+    #     'vie_lines': new_stats(vie_lines, 'vie_lines'),
+    # }
+    # print_stats(line_stats, 'lang')
+    # word_stats = {
+    #     'eng_words': new_stats(eng_words[:1000000], 'eng_words'),
+    #     'deu_words': new_stats(deu_words[:1000000], 'deu_words'),
+    #     'heb_words': new_stats(heb_words[:1000000], 'heb_words'),
+    #     'tur_words': new_stats(tur_words[:1000000], 'tur_words'),
+    #     'vie_words': new_stats(vie_words[:1000000], 'vie_words'),
+    # }
+    # print_stats(word_stats, 'lang')
+    #
+    # doc_df = pd.concat([doc_stats[lc]['data'] for lc in doc_stats.keys()])
+    # # plot
+    # plot(doc_df, 'doc',  'seq_len')
+    # plot(doc_df, 'doc',  'seq_ttr', cut=0)
+    # plot(doc_df, 'doc',  'seq_repr', cut=0)
+    # plot(doc_df, 'doc',  'seq_entr_loc', cut=0)
+    # plot(doc_df, 'doc',  'seq_entr_glob', cut=0)
+    #
+    # line_df = pd.concat([line_stats[lc]['data'] for lc in line_stats.keys()])
+    # # plot
+    # plot(line_df, 'line',  'seq_len')
+    # plot(line_df, 'line',  'seq_ttr', cut=0)
+    # plot(line_df, 'line',  'seq_repr', cut=0)
+    # plot(line_df, 'line',  'seq_entr_loc', cut=0)
+    # plot(line_df, 'line',  'seq_entr_glob', cut=0)
+    #
+    # word_df = pd.concat([word_stats[lc]['data'] for lc in word_stats.keys()])
+    # # plot
+    # plot(word_df, 'word',  'seq_len')
+    # plot(word_df, 'word',  'seq_ttr', cut=0)
+    # plot(word_df, 'word',  'seq_repr', cut=0)
+    # plot(word_df, 'word',  'seq_entr_loc', cut=0)
+    # plot(word_df, 'word',  'seq_entr_glob', cut=0)
+
+    robin = list(deepflatten(get_data_robin('data/robin/data'), 1))
+    bhgr = list(deepflatten(get_data_singletier('data/birddb/bhgr'), 1))
+    cath = list(deepflatten(get_data_singletier('data/birddb/cath2'), 1))
+    cavi = list(deepflatten(get_data_singletier('data/birddb/cavi2012'), 1))
+
+    max = min([len(robin), len(bhgr), len(cath), len(cavi)])
+
+    runents = [
+        running_entropy(robin, max=max),
+        running_entropy(bhgr, max=max),
+        running_entropy(cath, max=max),
+        running_entropy(cavi, max=max),
+    ]
+
+    x = [i for i in range(1, max)]
+    # y = np.transpose(np.array(runents))
+    # labels = ['robi', 'bhgb', 'cath', 'cavi']
+    # plt.plot(x, y, label=labels)
+    # plt.legend()
+    # plt.show()
 
     eng = get_data_human('data/teddi', r'eng.*\.txt')
     eng_docs, eng_lines = tokenize(eng['eng'], 'eng')
@@ -88,69 +179,58 @@ if __name__ == '__main__':
     heb = get_data_human('data/teddi', r'heb.*\.txt')
     heb_docs, heb_lines = tokenize(heb['heb'], 'heb')
     heb_words = charsplit(heb_docs, 'heb')
-    
+
     tur = get_data_human('data/teddi', r'tur.*\.txt')
     tur_docs, tur_lines = tokenize(tur['tur'], 'tur')
     tur_words = charsplit(tur_docs, 'tur')
-    
+
     vie = get_data_human('data/teddi', r'vie.*\.txt')
     vie_docs, vie_lines = tokenize(vie['vie'], 'vie')
     vie_words = charsplit(vie_docs, 'vie')
 
-    doc_stats = {
-        'eng_docs': new_stats(eng_docs, 'eng_docs'),
-        'deu_docs': new_stats(deu_docs, 'deu_docs'),
-        'heb_docs': new_stats(heb_docs, 'heb_docs'),
-        'tur_docs': new_stats(tur_docs, 'tur_docs'),
-        'vie_docs': new_stats(vie_docs, 'vie_docs'),
-    }
-    print_stats(doc_stats, 'lang')
-    line_stats = {
-        'eng_lines': new_stats(eng_lines, 'eng_lines'),
-        'deu_lines': new_stats(deu_lines, 'deu_lines'),
-        'heb_lines': new_stats(heb_lines, 'heb_lines'),
-        'tur_lines': new_stats(tur_lines, 'tur_lines'),
-        'vie_lines': new_stats(vie_lines, 'vie_lines'),
-    }
-    print_stats(line_stats, 'lang')
-    word_stats = {
-        'eng_words': new_stats(eng_words[:1000000], 'eng_words'),
-        'deu_words': new_stats(deu_words[:1000000], 'deu_words'),
-        'heb_words': new_stats(heb_words[:1000000], 'heb_words'),
-        'tur_words': new_stats(tur_words[:1000000], 'tur_words'),
-        'vie_words': new_stats(vie_words[:1000000], 'vie_words'),
-    }
-    print_stats(word_stats, 'lang')
+    wrunents = [
+        running_entropy(list(deepflatten(eng_docs, 1)), max=max),
+        running_entropy(list(deepflatten(deu_docs, 1)), max=max),
+        running_entropy(list(deepflatten(heb_docs, 1)), max=max),
+        running_entropy(list(deepflatten(tur_docs, 1)), max=max),
+        running_entropy(list(deepflatten(vie_docs, 1)), max=max),
+    ]
 
-    doc_df = pd.concat([doc_stats[lc]['data'] for lc in doc_stats.keys()])
-    # plot
-    plot(doc_df, 'doc',  'seq_len')
-    plot(doc_df, 'doc',  'seq_ttr', cut=0)
-    plot(doc_df, 'doc',  'seq_repr', cut=0)
-    plot(doc_df, 'doc',  'seq_entr_loc', cut=0)
-    plot(doc_df, 'doc',  'seq_entr_glob', cut=0)
+    crunents = [
+        running_entropy(list(deepflatten(eng_words, 1)), max=max),
+        running_entropy(list(deepflatten(deu_words, 1)), max=max),
+        running_entropy(list(deepflatten(heb_words, 1)), max=max),
+        running_entropy(list(deepflatten(tur_words, 1)), max=max),
+        running_entropy(list(deepflatten(vie_words, 1)), max=max),
+    ]
 
-    line_df = pd.concat([line_stats[lc]['data'] for lc in line_stats.keys()])
-    # plot
-    plot(line_df, 'line',  'seq_len')
-    plot(line_df, 'line',  'seq_ttr', cut=0)
-    plot(line_df, 'line',  'seq_repr', cut=0)
-    plot(line_df, 'line',  'seq_entr_loc', cut=0)
-    plot(line_df, 'line',  'seq_entr_glob', cut=0)
+    # y = np.transpose(np.array(wrunents))
+    # labels = ['eng', 'deu', 'heb', 'tur', 'vie']
+    # plt.plot(x, y, label=labels)
+    # plt.legend()
+    # plt.show()
+    #
+    # y = np.transpose(np.array(crunents))
+    # labels = ['eng', 'deu', 'heb', 'tur', 'vie']
+    # plt.plot(x, y, label=labels)
+    # plt.legend()
+    # plt.show()
 
-    word_df = pd.concat([word_stats[lc]['data'] for lc in word_stats.keys()])
-    # plot
-    plot(word_df, 'word',  'seq_len')
-    plot(word_df, 'word',  'seq_ttr', cut=0)
-    plot(word_df, 'word',  'seq_repr', cut=0)
-    plot(word_df, 'word',  'seq_entr_loc', cut=0)
-    plot(word_df, 'word',  'seq_entr_glob', cut=0)
+    y = np.transpose(np.array(runents + wrunents))
+    labels = ['robi', 'bhgb', 'cath', 'cavi', 'eng', 'deu', 'heb', 'tur', 'viet']
+    colors = ['red', 'red', 'red', 'red', 'blue', 'blue', 'blue', 'blue', 'blue']
 
+    plt.plot(x, y, label=labels)
+    plt.legend()
+    plt.show()
 
-    
-    
+    y = np.transpose(np.array(runents + crunents))
+    labels = ['robi', 'bhgb', 'cath', 'cavi', 'eng', 'deu', 'heb', 'tur', 'viet']
+    colors = ['red', 'red', 'red', 'red', 'blue', 'blue', 'blue', 'blue', 'blue']
 
-
+    plt.plot(x, y, label=labels)
+    plt.legend()
+    plt.show()
 
 
 
